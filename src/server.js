@@ -9,16 +9,35 @@ const app = express();
 connectDB();
 
 app.get("/", (req, res) => {
-  res.send("Hello Task Manager");
-});
+  res.send(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <style>
+        /* Resets default margins and centers the content perfectly on the screen */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            color: #dda523;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
 
-app.get("/users", async (req, res) => {
-  try {
-    const users = await User.find();
-    res.status(200).json({ success: true, users });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
+    <h1>Hello, World!</h1>
+
+</body>
+</html>
+  `);
 });
 
 app.listen(process.env.PORT, () => {
