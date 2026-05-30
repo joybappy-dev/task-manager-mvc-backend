@@ -9,35 +9,25 @@ const app = express();
 connectDB();
 
 app.get("/", (req, res) => {
-  res.send(`
-<!DOCTYPE html>
+  res.send(
+    `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
-    <style>
-        /* Resets default margins and centers the content perfectly on the screen */
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #000000;
-            color: #dda523;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-    </style>
+    <title>Your Page Title</title>
+    <!-- Link to your CSS file here -->
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body style="background-color: black; color:orange; height: 100vh; text-align: center; margin-top:400px; font-family: arial; font-size: 30px;">
+    <h1>Hello World</h1>
+    <!-- Your content goes here -->
 
-    <h1>Hello, World!</h1>
-
+    <!-- Link to your JavaScript file here -->
+    <script src="script.js"></script>
 </body>
-</html>
-  `);
+</html>`,
+  );
 });
 
 app.listen(process.env.PORT, () => {
