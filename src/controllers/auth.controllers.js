@@ -1,6 +1,8 @@
 import User from "../models/users.model.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
+// register user
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -24,7 +26,7 @@ export const registerUser = async (req, res) => {
       role,
     };
     const createdUser = await User.create(newUser);
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "user created successfully",
     });
@@ -35,12 +37,13 @@ export const registerUser = async (req, res) => {
   }
 };
 
+// login user
 export const loginUser = async (req, res) => {
   try {
     const { email, password: plainTextPassword } = req.body;
 
     // check if user exists in db
-    const user = User.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({
         message: "invalid credential",
@@ -52,16 +55,31 @@ export const loginUser = async (req, res) => {
       plainTextPassword,
       user.password,
     );
+
     if (!isValidPassword) {
       return res.status(400).json({
         message: "invalid credential",
       });
     }
 
-    // check login user route using thunder
-    res.send("Login successful");
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        userRole: user.role,
+      },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "1h",
+      },
+    );
+
+    res.status(200).json({
+      success: true,
+      token,
+    });
   } catch (err) {
     res.status(500).json({
+      success: false,
       message: "server error: " + err.message,
     });
   }
