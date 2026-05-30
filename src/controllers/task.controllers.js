@@ -15,7 +15,7 @@ export const createTask = async (req, res) => {
     const createdTask = await Task.create(newTask);
     res.status(201).json({
       success: true,
-      message: createdTask._id,
+      postId: createdTask._id,
     });
   } catch (err) {
     res.status(500).json({
