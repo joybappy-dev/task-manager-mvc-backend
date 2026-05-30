@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema(
   {
@@ -18,6 +18,8 @@ const taskSchema = new mongoose.Schema(
     },
     priority: {
       type: Boolean,
+      required: true,
+      default: false,
     },
     createdBy: {
       type: String,
@@ -26,7 +28,7 @@ const taskSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    versionKey: true,
+    versionKey: false,
   },
 );
 

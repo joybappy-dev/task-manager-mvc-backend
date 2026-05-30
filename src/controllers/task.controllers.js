@@ -1,5 +1,6 @@
 import Task from "../models/tasks.model.js";
 
+// create new task
 export const createTask = async (req, res) => {
   try {
     const { title, description, priority, createdBy } = req.body;
@@ -14,7 +15,7 @@ export const createTask = async (req, res) => {
     const createdTask = await Task.create(newTask);
     res.status(201).json({
       success: true,
-      createTask,
+      message: createdTask._id,
     });
   } catch (err) {
     res.status(500).json({
