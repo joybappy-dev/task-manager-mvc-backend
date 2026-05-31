@@ -23,3 +23,19 @@ export const createTask = async (req, res) => {
     });
   }
 };
+
+// get all tasks
+export const getAllTasks = async (req, res, next) => {
+  try {
+    const tasks = await Task.find();
+    res.status(200).json({
+      success: true,
+      tasks,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
