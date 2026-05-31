@@ -31,3 +31,20 @@ export const veryfiyJWT = async (req, res, next) => {
     });
   }
 };
+
+export const verifyAdmin = async (req, res) => {
+  try {
+    const role = req.user.role;
+    if (!role === "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "forbidden access",
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
