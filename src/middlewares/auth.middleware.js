@@ -32,15 +32,17 @@ export const veryfiyJWT = async (req, res, next) => {
   }
 };
 
-export const verifyAdmin = async (req, res) => {
+export const verifyAdmin = async (req, res, next) => {
   try {
-    const role = req.user.role;
-    if (!role === "admin") {
-      return res.status(403).json({
-        success: false,
-        message: "forbidden access",
-      });
+    const role = req.user.userRole;
+    if (role === "admin") {
+      return next();
     }
+
+    res.status(403).json({
+      success: false,
+      message: "forbidden access",
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
