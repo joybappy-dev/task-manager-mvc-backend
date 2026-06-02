@@ -39,3 +39,21 @@ export const getAllTasks = async (req, res, next) => {
     });
   }
 };
+
+export const getSingleTask = async (req, res) => {
+  try {
+    const taskId = req.params.id;
+    console.log(taskId);
+    const task = Task.findById(taskId);
+    console.log(task);
+    res.status(200).json({
+      success: true,
+      task,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
