@@ -44,13 +44,13 @@ export const getSingleTask = async (req, res) => {
   try {
     const taskId = req.params.id;
     console.log(taskId);
-    const task = Task.findById(taskId);
+    const task = await Task.findById(taskId);
     console.log(task);
     res.status(200).json({
       success: true,
       task,
     });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       success: false,
       message: err.message,
