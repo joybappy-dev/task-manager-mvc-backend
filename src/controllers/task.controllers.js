@@ -41,6 +41,7 @@ export const getAllTasks = async (req, res, next) => {
   }
 };
 
+// get single task by id
 export const getSingleTask = async (req, res) => {
   try {
     const taskId = req.params.id;
@@ -65,6 +66,44 @@ export const getSingleTask = async (req, res) => {
     res.status(200).json({
       success: true,
       task,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+// update task by id
+export const updateTask = async (req, res) => {
+  try {
+    const update = req.body;
+    const taskId = req.params.id;
+
+    const isValidId = mongoose.Types.ObjectId.isValid(taskId);
+    if (!isValidId) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Task Id",
+      });
+    }
+
+    const updatedTask = await Task.findByIdAndUpdate(taskId, update, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+
+    if (!updatedTask) {
+      return res.status(400).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      updatedTask,
     });
   } catch (err) {
     res.status(500).json({
