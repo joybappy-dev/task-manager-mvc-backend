@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Task from "../models/tasks.model.js";
 
 // create new task
@@ -43,9 +44,24 @@ export const getAllTasks = async (req, res, next) => {
 export const getSingleTask = async (req, res) => {
   try {
     const taskId = req.params.id;
-    console.log(taskId);
+
+    const validId = mongoose.Types.ObjectId.isValid(taskId);
+    if (!validId) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Task Id",
+      });
+    }
+
     const task = await Task.findById(taskId);
-    console.log(task);
+
+    if (!task) {
+      return res.status(400).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
     res.status(200).json({
       success: true,
       task,
