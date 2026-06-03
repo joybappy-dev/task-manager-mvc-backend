@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createTask,
+  deleteATask,
   getAllTasks,
   getSingleTask,
   updateTask,
@@ -13,5 +14,6 @@ router.post("/", veryfiyJWT, createTask);
 router.get("/", veryfiyJWT, verifyAdmin, getAllTasks);
 router.get("/:id", veryfiyJWT, getSingleTask);
 router.patch("/:id", veryfiyJWT, verifyAdmin, updateTask);
+router.delete("/:id", deleteATask);
 
 export default router;

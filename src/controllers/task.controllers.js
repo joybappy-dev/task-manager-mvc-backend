@@ -125,3 +125,39 @@ export const updateTask = async (req, res) => {
     });
   }
 };
+
+// delete a task by id
+export const deleteATask = async (req, res) => {
+  try {
+    // validate id
+    const taskId = req.params.id;
+    const isValid = mongoose.Types.ObjectId.isValid(taskId);
+    if (!isValid) {
+      return res.status(400).json({
+        success: false,
+        message: "Task Id is not valid",
+      });
+    }
+
+    // delete
+    const deleted = await Task.findByIdAndDelete(taskId);
+
+    if (!deleted) {
+      return res.status(400).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
+    // final response
+    res.status(200).json({
+      success: true,
+      deleted: deleted.title,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: `Server Error: ${err.message}`,
+    });
+  }
+};
