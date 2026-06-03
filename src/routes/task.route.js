@@ -11,7 +11,7 @@ const router = Router();
 
 router.post("/", veryfiyJWT, createTask);
 router.get("/", veryfiyJWT, verifyAdmin, getAllTasks);
-router.get("/:id", getSingleTask);
+router.get("/:id", veryfiyJWT, getSingleTask);
 router.patch("/:id", veryfiyJWT, verifyAdmin, updateTask);
 
 export default router;
