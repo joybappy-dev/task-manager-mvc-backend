@@ -4,13 +4,13 @@ import Task from "../models/tasks.model.js";
 // create new task
 export const createTask = async (req, res) => {
   try {
-    const { title, description, priority, createdBy } = req.body;
+    const { title, description, priority } = req.body;
 
     const newTask = {
       title,
       description,
       priority,
-      createdBy,
+      createdBy: req.user.userId,
     };
 
     const createdTask = await Task.create(newTask);
@@ -89,17 +89,30 @@ export const updateTask = async (req, res) => {
       });
     }
 
-    const updatedTask = await Task.findByIdAndUpdate(taskId, update, {
-      returnDocument: "after",
-      runValidators: true,
-    });
+    // find the task
+    const task = await Task.findById(taskId);
 
-    if (!updatedTask) {
+    if (!task) {
       return res.status(400).json({
         success: false,
         message: "Task not found",
       });
     }
+
+    // check if requested user is the creator of the task
+    const isCreator = task.createdBy.toString() === req.user?.userId.toString();
+    const isAdmin = req.user?.userRole === "admin";
+
+    if (!isCreator && !isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Forbidden access",
+      });
+    }
+
+    // overwrite update and save
+    Object.assign(task, update);
+    const updatedTask = await task.save();
 
     res.status(200).json({
       success: true,
