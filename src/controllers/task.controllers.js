@@ -135,24 +135,36 @@ export const deleteATask = async (req, res) => {
     if (!isValid) {
       return res.status(400).json({
         success: false,
-        message: "Task Id is not valid",
+        message: "Invalid TaskId",
       });
     }
 
-    // delete
-    const deleted = await Task.findByIdAndDelete(taskId);
+    // find task
+    const task = await Task.findById(taskId);
 
-    if (!deleted) {
-      return res.status(400).json({
+    if (!task) {
+      return res.status(404).json({
         success: false,
         message: "Task not found",
       });
     }
 
-    // final response
+    const isAdmin = req.user.userRole.toString() === "admin";
+    const isCreator = req.user.userId.toString() === task.createdBy.toString();
+
+    if (!isAdmin && !isCreator) {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized to delete this task",
+      });
+    }
+
+    // db.tasks.deleteOne({ _id: ObjectId("the_tasks_id_here") })
+    await task.deleteOne();
+
     res.status(200).json({
       success: true,
-      deleted: deleted.title,
+      message: "Task deleted successfully",
     });
   } catch (err) {
     return res.status(500).json({
