@@ -173,3 +173,15 @@ export const deleteATask = async (req, res) => {
     });
   }
 };
+
+export const filterTasksByStatus = async (req, res)=>{
+  try {
+    const status = req.query.status;
+    // console.log(status);
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: `Server Error: ${err.message}`,
+    });
+  }
+}
