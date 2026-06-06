@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createTask,
   deleteATask,
+  filterTasksByStatus,
   getAllTasks,
   getSingleTask,
   updateTask,
@@ -20,9 +21,12 @@ router.get("/", veryfiyJWT, verifyAdmin, getAllTasks);
 router.get("/:id", veryfiyJWT, getSingleTask);
 
 // update task by id
-router.patch("/:id", veryfiyJWT, verifyAdmin, updateTask);
+router.patch("/:id", veryfiyJWT, updateTask);
 
 // delete task by id
-router.delete("/:id", veryfiyJWT, verifyAdmin, deleteATask);
+router.delete("/:id", veryfiyJWT, deleteATask);
+
+// filter tasks by status
+router.get("/filter", filterTasksByStatus);
 
 export default router;
