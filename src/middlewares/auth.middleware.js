@@ -41,7 +41,7 @@ export const verifyAdmin = async (req, res, next) => {
 
     res.status(403).json({
       success: false,
-      message: "forbidden access",
+      message: "Only admin has the authority",
     });
   } catch (err) {
     res.status(500).json({
