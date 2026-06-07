@@ -27,6 +27,6 @@ router.patch("/:id", veryfiyJWT, updateTask);
 router.delete("/:id", veryfiyJWT, deleteATask);
 
 // filter tasks by status
-router.get("/filter", filterTasksByStatus);
+router.get("/filter/status", filterTasksByStatus);
 
 export default router;
