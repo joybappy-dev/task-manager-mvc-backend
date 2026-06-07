@@ -176,17 +176,20 @@ export const deleteATask = async (req, res) => {
 
 export const filterTasksByStatus = async (req, res) => {
   try {
-    const query = req.query;
-    const tasks = await Task.find({ status: query.status });
+    const VALID_STATUSES = ["pending", "in-progress", "completed"];
+    const { status } = req.query;
 
-    if (!tasks) {
-      return res.success(404).json({
+    if (!status || !VALID_STATUSES.includes(status)) {
+      return res.status(400).json({
         success: false,
-        message: "No task fond",
+        message:
+          "Invalid or missing status. Must be one of: pending, in-progress, completed",
       });
     }
 
-    res.status(200).json({ success: true, tasks });
+    const tasks = await Task.find({ status });
+
+    return res.status(200).json({ success: true, tasks });
   } catch (err) {
     return res.status(500).json({
       success: false,
