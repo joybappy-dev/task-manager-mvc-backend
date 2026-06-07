@@ -174,14 +174,23 @@ export const deleteATask = async (req, res) => {
   }
 };
 
-export const filterTasksByStatus = async (req, res)=>{
+export const filterTasksByStatus = async (req, res) => {
   try {
-    const status = req.query.status;
-    // console.log(status);
+    const query = req.query;
+    const tasks = await Task.find({ status: query.status });
+
+    if (!tasks) {
+      return res.success(404).json({
+        success: false,
+        message: "No task fond",
+      });
+    }
+
+    res.status(200).json({ success: true, tasks });
   } catch (err) {
     return res.status(500).json({
       success: false,
       message: `Server Error: ${err.message}`,
     });
   }
-}
+};
