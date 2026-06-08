@@ -174,6 +174,7 @@ export const deleteATask = async (req, res) => {
   }
 };
 
+// filter task by status
 export const filterTasksByStatus = async (req, res) => {
   try {
     const VALID_STATUSES = ["pending", "in-progress", "completed"];
@@ -191,6 +192,24 @@ export const filterTasksByStatus = async (req, res) => {
 
     return res.status(200).json({ success: true, tasks });
   } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: `Server Error: ${err.message}`,
+    });
+  }
+};
+
+// search task by name
+export const searchTask = async (req, res) => {
+  try {
+    // recieve searched value from query
+    // remove space + lowercase text
+    // search task with same title in mongodb
+
+    const searchedText = req.query.search;
+    const tasks = await Task.find()
+    return res.json(tasks)
+  } catch (error) {
     return res.status(500).json({
       success: false,
       message: `Server Error: ${err.message}`,
