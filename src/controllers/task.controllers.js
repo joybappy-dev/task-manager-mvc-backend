@@ -202,14 +202,17 @@ export const filterTasksByStatus = async (req, res) => {
 // search task by name
 export const searchTask = async (req, res) => {
   try {
-    // recieve searched value from query
-    // remove space + lowercase text
-    // search task with same title in mongodb
+    const query = req.query.search;
+    const allTasks = await Task.find();
+    const filtered = allTasks.filter((task) =>
+      task.title.toLowerCase().includes(query.toLowerCase()),
+    );
 
-    const searchedText = req.query.search;
-    const tasks = await Task.find()
-    return res.json(tasks)
-  } catch (error) {
+    res.status(200).json({
+      success: true,
+      tasks: filtered,
+    });
+  } catch (err) {
     return res.status(500).json({
       success: false,
       message: `Server Error: ${err.message}`,
