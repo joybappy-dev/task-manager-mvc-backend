@@ -219,3 +219,15 @@ export const searchTask = async (req, res) => {
     });
   }
 };
+
+export const sortTask = async(req, res)=>{
+  try {
+    const query = req.query.sort;
+    
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: `Server Error: ${err.message}`,
+    });
+  }
+}
