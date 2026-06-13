@@ -220,14 +220,18 @@ export const searchTask = async (req, res) => {
   }
 };
 
-export const sortTask = async(req, res)=>{
+export const sortTask = async (req, res) => {
   try {
-    const query = req.query.sort;
-    
+    const sortValue = req.query.priority;
+    const sortedTasks = await Task.find({ priority: sortValue });
+    res.status(200).json({
+      success: true,
+      tasks: sortedTasks
+    })
   } catch (err) {
     return res.status(500).json({
       success: false,
       message: `Server Error: ${err.message}`,
     });
   }
-}
+};
