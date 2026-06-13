@@ -6,6 +6,7 @@ import {
   getAllTasks,
   getSingleTask,
   searchTask,
+  sortTask,
   updateTask,
 } from "../controllers/task.controllers.js";
 import { verifyAdmin, veryfiyJWT } from "../middlewares/auth.middleware.js";
@@ -20,6 +21,9 @@ router.get("/", veryfiyJWT, verifyAdmin, getAllTasks);
 
 // search task by title
 router.get("/search", searchTask);
+
+// sort task by priority
+router.get("/sort", sortTask);
 
 // filter tasks by status
 router.get("/filter/status", filterTasksByStatus);
