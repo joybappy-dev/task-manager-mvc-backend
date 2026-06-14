@@ -26,11 +26,25 @@ export const createTask = async (req, res) => {
 };
 
 // get all tasks
-export const getAllTasks = async (req, res, next) => {
+export const getAllTasks = async (req, res) => {
   try {
+    const query = req.query.search;
+
+    if (query) {
+      const tasks = await Task.find({
+        title: { $regex: query, $options: "i" },
+      });
+      return res.status(200).json({
+        success: true,
+        total: tasks.length,
+        tasks,
+      });
+    }
+
     const tasks = await Task.find();
     res.status(200).json({
       success: true,
+      total: tasks.length,
       tasks,
     });
   } catch (err) {
@@ -226,8 +240,8 @@ export const sortTask = async (req, res) => {
     const sortedTasks = await Task.find({ priority: sortValue });
     res.status(200).json({
       success: true,
-      tasks: sortedTasks
-    })
+      tasks: sortedTasks,
+    });
   } catch (err) {
     return res.status(500).json({
       success: false,

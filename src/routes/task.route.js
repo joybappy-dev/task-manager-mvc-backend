@@ -17,7 +17,8 @@ const router = Router();
 router.post("/", veryfiyJWT, createTask);
 
 // get all tasks
-router.get("/", veryfiyJWT, verifyAdmin, getAllTasks);
+// router.get("/", veryfiyJWT, verifyAdmin, getAllTasks);
+router.get("/", getAllTasks)
 
 // search task by title
 router.get("/search", searchTask);
