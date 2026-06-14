@@ -29,6 +29,16 @@ export const createTask = async (req, res) => {
 export const getAllTasks = async (req, res) => {
   try {
     const query = req.query.search;
+    const status = req.query.status;
+
+    if(status){
+      const tasks = await Task.find({status: status})
+      return res.status(200).json({
+        success: true,
+        total: tasks.length,
+        tasks,
+      });
+    }
 
     if (query) {
       const tasks = await Task.find({
