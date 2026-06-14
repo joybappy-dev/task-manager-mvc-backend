@@ -30,7 +30,20 @@ export const getAllTasks = async (req, res) => {
   try {
     const query = req.query.search;
     const status = req.query.status;
+    const priority = req.query.priority;
+  
 
+    // filter by priority
+    if(priority){
+      const tasks = await Task.find({priority: priority})
+      return res.status(200).json({
+        success: true,
+        total: tasks.length,
+        tasks,
+      });
+    }
+
+    // filter by status
     if(status){
       const tasks = await Task.find({status: status})
       return res.status(200).json({
@@ -40,6 +53,7 @@ export const getAllTasks = async (req, res) => {
       });
     }
 
+    // search by title
     if (query) {
       const tasks = await Task.find({
         title: { $regex: query, $options: "i" },
@@ -51,6 +65,7 @@ export const getAllTasks = async (req, res) => {
       });
     }
 
+    // all without any filter
     const tasks = await Task.find();
     res.status(200).json({
       success: true,
